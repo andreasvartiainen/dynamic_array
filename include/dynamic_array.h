@@ -22,7 +22,7 @@ typedef struct {
   size_t capacity;
 } Doubles;
 
-// item is the value to be pushed to the array
+// push item to array
 #define da_push(array, item)                                                   \
   do {                                                                         \
     if ((array).count >= (array).capacity) {                                   \
@@ -39,6 +39,7 @@ typedef struct {
     (array).items[(array).count++] = item;                                     \
   } while (0)
 
+// insert item to index
 #define da_insert(array, item, index)                                          \
   do {                                                                         \
     if ((index) >= (array).count) {                                            \
@@ -58,7 +59,24 @@ typedef struct {
     }                                                                          \
   } while (0)
 
-// item is the destination where we store the value
+// remove item from index
+#define da_remove(array, item, index)                                          \
+  do {                                                                         \
+    if ((array).count > 0) {                                                   \
+      if ((index) < (array).count) {                                           \
+        (item) = (array).items[index];                                         \
+        memmove(((array).items + (index)), ((array).items + (index) + 1),      \
+                ((array).count - (index)) * sizeof(*(array).items));           \
+        (array).count--;                                                       \
+      } else if ((index) >= (array).count) {                                   \
+        da_pop(array, item);                                                   \
+      }                                                                        \
+    } else {                                                                   \
+      (item) = 0;                                                              \
+    }                                                                          \
+  } while (0)
+
+// pop item from array
 #define da_pop(array, item)                                                    \
   do {                                                                         \
     if ((array).count > 0) {                                                   \

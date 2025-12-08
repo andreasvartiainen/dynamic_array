@@ -2,11 +2,12 @@
 // this is added in the cmake file as target
 // and as a test
 #include <assert.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "dynamic_array.h"
 
-int fail(const char* msg) {
+int fail(const char* msg, ...) {
 	return fprintf(stderr, "TEST FAILED: %s\n", msg);
 }
 
@@ -67,7 +68,7 @@ int main() { // NOLINT
 	TEST(d_array.items == nullptr, "after da_free() d_array items is nullptr");
 	}
 
-	// INSERT TEST
+	// ---------- INSERT_TEST ----------
 	{
 	Integers array = {0};
 	da_insert(array, 42, 10);
@@ -91,6 +92,49 @@ int main() { // NOLINT
 
 	da_free(array);
 	}
+	// ---------- INSERT_TEST_END ----------
+
+	// ---------- REMOVE_FROM_INDEX_TEST ---
+	{
+	Integers array = {0};
+	int item = 0;
+
+	da_remove(array, item, 5);
+
+	TEST(array.count == 0, "removing from empty doesn't decrement array.count");
+	TEST(array.capacity == 0, "removing from empty doesn't capacity array.count");
+
+	for (int i = 0; i < 200; i++) {
+		da_push(array, i);
+	}
+
+	da_remove(array, item, 1000); // should behave like da_pop
+																//
+	TEST(array.count == 199, "removing from array decrements array.count");
+	TEST(array.capacity == 256, "removing from array doesn't affeect array.capacity");
+	TEST(item == 199, "removing from array returns the correct value");
+
+	da_remove(array, item, 15);
+
+	TEST(array.count == 198, "removing from array decrements array.count");
+	printf("%d\n", item);
+	TEST(item == 15, "removing from array returns the correct value");
+
+	da_remove(array, item, 0); // should behave like da_pop
+	TEST(array.count == 197, "removing from array decrements array.count");
+	printf("%d\n", item);
+	TEST(item == 0, "removing from array returns the correct value");
+	
+	for (int i = 0; i < 3000; i++) {
+		da_remove(array, item, 0);
+	}
+
+	TEST(array.count == 0, "emptying the array with da_remove() makes the count 0");
+	TEST(item == 0, "emptying the array with da_remove() returns 0");
+
+	da_free(array);
+	}
+	// ---------- REMOVE_FROM_INDEX_TEST_END --
 
 	return 0;
 }

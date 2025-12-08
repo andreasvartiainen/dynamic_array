@@ -6,6 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+void print_array(Integers *array) {
+	for (size_t i = 0; i < array->count; i++) {
+		printf("%2d ", array->items[i]);
+	}
+	printf("\n");
+}
+
 int main() { // NOLINT
   char *c_array defer = malloc(sizeof(char) * 50);
   memset(c_array, 'C', sizeof(char) * 50);
@@ -17,23 +24,34 @@ int main() { // NOLINT
   for (int i = 0; i < 50; ++i) {
     printf("%c", c_array[i]);
   }
+	printf("\n");
 
   Integers array = {0};
+	for (int i = 0; i < 25; i++) {
+		da_push(array, i);
+	}
 
-	size_t index = 0;
-	int item = 69;
+	int item = 10;
 
-  if ((index) >= array.count) {
-    da_push(array, (item));
-  } else {
-		if (array.count + 1 >= array.capacity) {
-			array.items = realloc(&array, array.capacity * 2 * sizeof(item));
-			array.capacity *= 2;
-		}
-		memmove((array.items + index + 1), (array.items + index), array.count - index);
-		array.items[index] = item;
-		array.count++;
-  }
+	print_array(&array);
+	printf("\n");
 
-  return 0;
+	for (int i = 0; i < 5; i++) {
+		da_remove(array, item, 0);
+	}
+	da_remove(array, item, 5);
+	da_remove(array, item, 5);
+	da_remove(array, item, 5);
+	da_remove(array, item, 5);
+	print_array(&array);
+	da_remove(array, item, 1000);
+
+	print_array(&array);
+	printf("\n");
+
+	printf("%d\n", item);
+	printf("%zu\n", array.count);
+	printf("%zu\n", array.capacity);
+
+	return 0;
 }
