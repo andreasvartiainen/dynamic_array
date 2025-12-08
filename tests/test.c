@@ -20,6 +20,11 @@ if (!(CASE)) { \
 	return fail(MSG);\
 }
 
+#define push_to_array(array, items)\
+	for (int i = 0; i < (items); i++) {\
+		da_push(array, i);\
+	}\
+
 int main() { // NOLINT
 	{
 	Integers array = {0};
@@ -135,6 +140,32 @@ int main() { // NOLINT
 	da_free(array);
 	}
 	// ---------- REMOVE_FROM_INDEX_TEST_END --
+	
+	// ---------- DA_GET_TESTING --------------
+	{
+	Integers array = {0};
+	int item = 0;
+	push_to_array(array, 200);
 
+	da_get(array, item, 100);
+
+	TEST(item == 100, "item at index 100 is 100");
+
+	da_get(array, item, 0);
+
+	TEST(item == 0, "item at index 0 is 0");
+
+	da_get(array, item, array.count - 1);
+
+	TEST(item == 199, "item at last index is 199");
+
+	da_get(array, item, 100000);
+
+	TEST(item == 0, "too high index returns 0");
+
+	da_free(array);
+	}
+	// ---------- DA_GET_TESTING_END ----------
+	//
 	return 0;
 }

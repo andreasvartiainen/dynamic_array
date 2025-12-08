@@ -85,6 +85,17 @@ typedef struct {
     }                                                                          \
   } while (0)
 
+// get item at index
+#define da_get(array, item, index)                                             \
+  do {                                                                         \
+    if ((index) < (array).count) {                                             \
+      (item) = (array).items[index];                                           \
+    } else {                                                                   \
+      (item) = 0;                                                              \
+    }                                                                          \
+  } while (0)
+
+// free the dynamic array
 #define da_free(array)                                                         \
   do {                                                                         \
     free((array).items);                                                       \
