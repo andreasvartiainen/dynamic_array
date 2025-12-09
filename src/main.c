@@ -8,7 +8,9 @@
 
 void print_array(Integers *array) {
 	for (size_t i = 0; i < array->count; i++) {
-		printf("%2d ", array->items[i]);
+		int item = 0;
+		da_get(*array, item, i);
+		printf("%2d ", item);
 	}
 	printf("\n");
 }
@@ -33,6 +35,8 @@ int main() { // NOLINT
 	da_remove(array, item, 5);
 	print_array(&array);
 	da_remove(array, item, 1000);
+	da_clear(array);
+	da_push(array, 15);
 
 	print_array(&array);
 	printf("\n");

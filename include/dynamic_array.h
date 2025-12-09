@@ -95,6 +95,13 @@ typedef struct {
     }                                                                          \
   } while (0)
 
+// sets the count to 0 and memsets the used memory to 0
+#define da_clear(array)                                                        \
+  do {                                                                         \
+    memset((array).items, 0, (array).count * sizeof(*(array).items));          \
+    (array).count = 0;                                                         \
+  } while (0);
+
 // free the dynamic array
 #define da_free(array)                                                         \
   do {                                                                         \

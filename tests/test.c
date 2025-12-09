@@ -165,7 +165,27 @@ int main() { // NOLINT
 
 	da_free(array);
 	}
-	// ---------- DA_GET_TESTING_END ----------
+	// ---------- DA_GET_TESTING_END   ----------
+	
+	// ---------- DA_CLEAR_TESTING     ----------
+	{
+	Integers array = {0};
+	push_to_array(array, 200);
+
+	da_clear(array);
+
+	int item = 0;
+	for (size_t i = 0; i < 200; i++) {
+		da_get(array, item, i);
+	}
+
+	TEST(item == 0, "all items in the list are 0 after clear");
+	TEST(array.count == 0, "array count is 0");
+	TEST(array.capacity == 256, "array capacity is 256");
+
+	da_free(array);
+	}
+	// ---------- DA_CLEAR_TESTING_END ----------
 	//
 	return 0;
 }
