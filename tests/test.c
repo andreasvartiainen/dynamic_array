@@ -161,7 +161,7 @@ int main() { // NOLINT
 
 	da_get(array, item, 100000);
 
-	TEST(item == 0, "too high index returns 0");
+	TEST(item == 199, "too high index returns item");
 
 	da_free(array);
 	}
@@ -186,6 +186,27 @@ int main() { // NOLINT
 	da_free(array);
 	}
 	// ---------- DA_CLEAR_TESTING_END ----------
+	
+	// ---------- DA_SET_TESTING ----------
+	{
+	Integers array = {0};
+	push_to_array(array, 200);
+
+	da_set(array, 0, 15);
+
+	TEST(array.items[0] == 15, "item at index 0 set to 15 is 15");
+
+	da_set(array, 199, 15);
+
+	TEST(array.items[array.count-1] == 15, "item at last index when set to 15 is 15");
+
+	da_set(array, 50, 15);
+
+	TEST(array.items[50] == 15, "item at last index when set to 15 is 15");
+
+	da_free(array);
+	}
+	// ---------- DA_SET_TESTING_END ----------
 	//
 	return 0;
 }

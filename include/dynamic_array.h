@@ -8,6 +8,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+// :TODO:
+// swap
+// reserve
+// resize
+// erase
+
+// nice to have:::
+// insert_range
+// push_range
+
+// must have::::::
+// clear				OK
+// insert   		OK
+// push_back		OK
+// pop_back 		OK
+
 static const size_t da_initial_size = 256;
 
 typedef struct {
@@ -81,7 +97,7 @@ typedef struct {
   do {                                                                         \
     if ((array).count > 0) {                                                   \
       (item) = (array).items[--(array).count];                                 \
-      (array).items[(array).count] = 0;                                        \
+      (array).items[(array).count] = (item);                                   \
     }                                                                          \
   } while (0)
 
@@ -91,7 +107,16 @@ typedef struct {
     if ((index) < (array).count) {                                             \
       (item) = (array).items[index];                                           \
     } else {                                                                   \
-      (item) = 0;                                                              \
+      (item) = (item);                                                         \
+    }                                                                          \
+  } while (0)
+
+// set index to a value
+#define da_set(array,index,item)                                             \
+  do {                                                                         \
+		assert((index) < (array).count);\
+    if ((index) < (array).count) {                                             \
+      (array).items[index] = item;                                             \
     }                                                                          \
   } while (0)
 
